@@ -1,0 +1,38 @@
+/*
+ * SPDX-FileCopyrightText: 2026 ID8 Engineering AB
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	chosen {
+		zephyr,display = &oled0;
+	};
+
+	zephyr,user {
+		io-channels = <&adc 1>;
+		io-channel-names = "mikrobus_2_an";
+	};
+};
+
+&mikrobus_1_i2c {
+	status = "okay";
+	zephyr,concat-buf-size = <512>;
+	zephyr,flash-buf-max-size = <512>;
+
+	oled0: oled@3c {
+		compatible = "solomon,ssd1306";
+		reg = <0x3c>;
+		width = <96>;
+		height = <40>;
+		segment-offset = <32>;
+		page-offset = <0>;
+		display-offset = <0>;
+		multiplex-ratio = <39>;
+		segment-remap;
+		com-invdir;
+		prechargep = <0x25>;
+		ready-time-ms = <250>;
+		reset-gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
+	};
+};

@@ -1,0 +1,15 @@
+sample:
+  name: Alcometer
+tests:
+  sample.alcometer:
+    build_only: true
+    platform_allow:
+      - seven/nrf9151/ns
+    integration_platforms:
+      - seven/nrf9151/ns
+    tags:
+      - adc
+      - display
+      - i2c
+      - led
+      - pwm

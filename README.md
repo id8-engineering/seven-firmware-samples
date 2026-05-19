@@ -96,3 +96,4 @@ Example on MacOS:
 These are samples tailored for the Seven board and developed by us.
 
 * [Temperature & Humidity sample](samples/temp_and_hum/README.md)
+* [Alcohol Alarm sample](samples/alcohol_alarm)
