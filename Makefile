@@ -17,7 +17,12 @@ sample-at-client:
 
 .PHONY: sample-all
 ## sample-all         Build all sample-* targets
-sample-all: sample-hello-world sample-blinky sample-at-client
+sample-all: sample-hello-world sample-blinky sample-at-client sample-alcohol-alarm
+
+.PHONY: sample-alcohol-alarm
+## sample-alcohol-alarm  Build alcometer alarm sample
+sample-alcohol-alarm:
+	west build --sysbuild -p always -b seven/nrf9151/ns samples/alcohol_alarm
 
 .PHONY : help
 help : Makefile

@@ -36,4 +36,4 @@ jobs:
         working-directory: seven-firmware-samples
         shell: bash
         run: |
-          make sample-all
+          west build -p always  -b seven/nrf9151/ns samples/alcohol_alarm
