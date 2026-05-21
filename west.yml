@@ -2,12 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 manifest:
-  self:
-    west-commands: scripts/west-commands.yml
-
   remotes:
     - name: ncs
       url-base: https://github.com/nrfconnect
+    - name: id8
+      url-base: https://github.com/id8-engineering
 
   projects:
     - name: nrf
@@ -15,3 +14,9 @@ manifest:
       repo-path: sdk-nrf
       revision: v3.2.1
       import: true
+
+    - name: seven-board
+      remote: id8
+      repo-path: seven-board
+      revision: main
+      path: modules/seven-board
