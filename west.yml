@@ -20,3 +20,8 @@ manifest:
       repo-path: seven-board
       revision: main
       path: modules/seven-board
+
+    - name: mender-mcu
+      url: https://github.com/mendersoftware/mender-mcu
+      revision: cf31fa22bf358a1c58b0c32a4337571a35e1a1fd
+      path: modules/mender-mcu
