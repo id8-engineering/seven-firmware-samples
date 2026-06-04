@@ -15,6 +15,10 @@ sample-blinky:
 sample-at-client:
 	west build --sysbuild -p always -b seven/nrf9151/ns ../nrf/samples/cellular/at_client/ -- -DCONF_FILE=$$PWD/samples/conf/at_client.conf
 
+.PHONY: sample-all
+## sample-all         Build all sample-* targets
+sample-all: sample-hello-world sample-blinky sample-at-client
+
 .PHONY : help
 help : Makefile
 	@sed -n 's/^##//p' $<

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: Build sample
+    name: Build samples
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -36,4 +36,4 @@ jobs:
         working-directory: seven-firmware-samples
         shell: bash
         run: |
-          west build --sysbuild -p always -b seven/nrf9151/ns ../zephyr/samples/hello_world
+          make sample-all
