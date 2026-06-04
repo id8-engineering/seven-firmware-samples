@@ -99,10 +99,10 @@ west update
 
 ### Build and flash sample
 
-Build Zephyr Project Hello World samples:
+Build Zephyr Project samples, see samples in [Makefile](Makefile/):
 
 ```bash
-west build --sysbuild -p always -b seven/nrf9151/ns ../zephyr/samples/hello_world
+make sample-hello-world
 ```
 
 Flash Seven:
@@ -124,3 +124,9 @@ Sample output should look like:
 >*** Using Zephyr OS v4.2.99-ec78104f1569 ***
 >Hello World! seven/nrf9151
 >```
+
+To see all available samples run:
+
+```bash
+make help
+```
