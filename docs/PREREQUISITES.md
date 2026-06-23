@@ -13,6 +13,12 @@ to flash and debug over RTT. You will also need to install nRF Util to use NCS
 * [J-Link PLUS Compact](https://shop.segger.com/debug-trace-probes/debug-probes/j-link/j-link-plus-compact)
 * Install [nRF Util](https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html)
 
+### Supported platforms
+
+We support a tested and verified development path on the following platforms:
+
+* Ubuntu 26.04
+
 ## Setup nRF Connect development environment
 
 Install nRF Connect SDK manager:
