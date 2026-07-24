@@ -1,0 +1,11 @@
+&spi1 {
+	status = "disabled";
+};
+
+&i2c1 {
+	status = "okay";
+};
+
+&npm1300 {
+	status = "okay";
+};
