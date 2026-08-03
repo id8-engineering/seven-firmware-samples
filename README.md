@@ -55,11 +55,35 @@ Flash Seven:
 west flash
 ```
 
-Use West RTT to access Seven serial console:
+Debug:
+
+<details>
+<summary>Linux</summary>
 
 ```bash
 west rtt
+  ```
+
+</details>
+
+<details>
+<summary>macOS</summary>
+
+Due to a known [issue](https://github.com/orgs/id8-engineering/projects/3?pane=issue&itemId=214066647&issue=id8-engineering%7Cseven-hardware%7C124) another debug path is currently recommended for macOS users until it is resolved.
+
+Open a second terminal on your host and run:
+
+```bash
+JLinkGDBServer -device nRF9151_xxCA -if SWD -speed 4000 -port 2331 -RTTTelnetPort 19021
 ```
+
+Go back to the previous terminal again and run:
+
+```bash
+JLinkRTTClient
+```
+
+</details>
 
 Sample output should look like:
 
