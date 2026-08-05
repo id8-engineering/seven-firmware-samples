@@ -36,4 +36,5 @@ jobs:
         working-directory: seven-firmware-samples
         shell: bash
         run: |
-          make sample-all
+          west build -p always -b seven/nrf9151/ns ../zephyr/samples/sensor/hts221 -- \
+          -DEXTRA_DTC_OVERLAY_FILE=$(pwd)/samples/temp_and_hum/boards/seven_nrf9151_ns.overlay

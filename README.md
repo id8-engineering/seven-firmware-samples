@@ -42,9 +42,9 @@ This repository contains sample applications and tutorials for the Seven board.
 
 See [docs/PREREQUISITES.md](docs/PREREQUISITES.md), which is common prerequisites for all samples in this repository.
 
-### Build and flash sample
+### Build and flash hello world sample
 
-Build Zephyr Project samples, see samples in [Makefile](Makefile/):
+Build Zephyr Project hello world sample:
 
 ```bash
 make sample-hello-world
@@ -99,3 +99,9 @@ To see all available samples run:
 ```bash
 make help
 ```
+
+## More samples
+
+List of more (advanced) samples:
+
+* [Temperature & Humidity sample](samples/temp_and_hum/README.md)
