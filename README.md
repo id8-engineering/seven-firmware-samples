@@ -44,13 +44,27 @@ See [docs/PREREQUISITES.md](docs/PREREQUISITES.md), which is common prerequisite
 
 ### Build and flash sample
 
-Build Zephyr Project samples, see samples in [Makefile](Makefile/):
+Build and flash Zephyr project and NCS samples:
+
+* See all samples from Zephyr [here](https://docs.zephyrproject.org/latest/samples/index.html).
+* See all samples from NCS [here](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples.html)
+
+To build applications/samples on Seven use this commando and build the sample
+you want to build:
+
+Zephyr:
 
 ```bash
-make sample-hello-world
+west build -p always -b seven/nrf9151/ns ../zephyr/samples/drivers/led/led_strip/
 ```
 
-Flash Seven:
+NCS:
+
+```bash
+west build -p always -b seven/nrf9151/ns ../nrf/samples/cellular/at_client/
+```
+
+Flash:
 
 ```bash
 west flash
@@ -58,44 +72,21 @@ west flash
 
 Debug:
 
-<details>
-<summary>Linux</summary>
+To debug on Seven we use UART, connect a JST-SH cable including in the
+Raspberry Pi Debug Probe package and connect it from Probes UART to Sevens UART
+header.
+
+To see the output use a serial monitor, for example `minicom` or `screen`. See
+examples down below:
+
+### Linux
 
 ```bash
-west rtt
-  ```
-
-</details>
-
-<details>
-<summary>macOS</summary>
-
-Due to a known [issue](https://github.com/orgs/id8-engineering/projects/3?pane=issue&itemId=214066647&issue=id8-engineering%7Cseven-hardware%7C124) another debug path is currently recommended for macOS users until it is resolved.
-
-Open a second terminal on your host and run:
-
-```bash
-JLinkGDBServer -device nRF9151_xxCA -if SWD -speed 4000 -port 2331 -RTTTelnetPort 19021
+minicom -D /dev/ttyACM0 -b 115200
 ```
 
-Go back to the previous terminal again and run:
+### macOS example
 
 ```bash
-JLinkRTTClient
-```
-
-</details>
-
-Sample output should look like:
-
->```text
->*** Booting nRF Connect SDK v3.2.1-d8887f6f32df ***
->*** Using Zephyr OS v4.2.99-ec78104f1569 ***
->Hello World! seven/nrf9151
->```
-
-To see all available samples run:
-
-```bash
-make help
+minicom -D /dev/cu.usbmodem1101 -b 115200
 ```
