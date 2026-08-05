@@ -10,32 +10,14 @@ Prior to development you will need to acquire the J-Link PLUS Compact to be able
 to flash and debug over RTT. You will also need to install nRF Util to use NCS
 (nRF Connect SDK).
 
-* [J-Link PLUS Compact](https://shop.segger.com/debug-trace-probes/debug-probes/j-link/j-link-plus-compact)
-* [ARM20-CTX 20-Pin to TC2030-IDC Adapter for Cortex](https://www.tag-connect.com/product/arm20-ctx-20-pin-to-tc2030-idc-adapter-for-cortex)
-* [TC2030 Cable](https://www.tag-connect.com/product/tc2030-idc-nl)
-* [TC2030 Clip](https://www.tag-connect.com/product/tc2030-retaining-clip-board-3-pack)
-* USB-C cable
+* [Raspberry Pi Debug Probe](https://www.electrokit.com/raspberry-pi-debug-probe.)
 * Install [nRF Util](https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html)
 >[!NOTE]
 >When you enter nRF Util install link please look at there own prerequisites.
 
-Prior to flashing and using Seven you need to connect a few things to get the
-board to work.
-
-1. Assemble all the parts for the JLink PLUS compact, it should look like this:
-
->```text
->Computer
->  └─ USB-C cable
->      └─ J-Link PLUS Compact
->        └─ TC2030-IDC adapter
->            └─ TC2030-IDC cable
->              └─ Seven TC2030 footprint
->                  └─ TC2030 clip
->```
-
-
-2. Connect external power supply to Seven:
+Prior to flashing and using Seven you need to connect the debugger cables from the
+Raspberry Pi Debug Probe to Seven, use "DEBUG" for flashing and "UART" for debugging/logging.
+Connect external power supply to Seven.
 >[!NOTE]
 > Sevens supported power supply level is 6-36V but it is fully possible
 > to connect 5V to the power supply contact.
