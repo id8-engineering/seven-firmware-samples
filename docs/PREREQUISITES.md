@@ -40,13 +40,13 @@ nrfutil install sdk-manager
 Install nRF Connect SDK:
 
 ```bash
-nrfutil sdk-manager install v3.2.1
+nrfutil sdk-manager install v3.4.0
 ```
 
 Start the nRF Connect SDK toolchain shell:
 
 ```bash
-nrfutil sdk-manager toolchain launch --ncs-version v3.2.1 --shell
+nrfutil sdk-manager toolchain launch --ncs-version v3.4.0 --shell
 ```
 
 If the command succeeds, your shell prompt will change to something like:
@@ -55,7 +55,7 @@ If the command succeeds, your shell prompt will change to something like:
 <summary>Linux</summary>
 
 >```bash
->(v3.2.1) [user@host ~]$
+>(v3.4.0) [user@host ~]$
 >```
 
 </details>
@@ -64,7 +64,7 @@ If the command succeeds, your shell prompt will change to something like:
 <summary>macOS</summary>
 
 >```bash
->(v3.2.1) hostname%
+>(v3.4.0) hostname%
 >```
 
 </details>
