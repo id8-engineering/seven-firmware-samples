@@ -19,7 +19,7 @@ from the `seven-firmware-samples` repository root.
 
 Build Zephyr's HTS221 sample with the Seven-specific devicetree overlay:
 
-```bash
+```bash {"cwd":"../..","name":"build-temp-and-hum"}
 west build -p always -b seven/nrf9151/ns ../zephyr/samples/sensor/hts221 -- \
   -DEXTRA_DTC_OVERLAY_FILE=$(pwd)/samples/temp_and_hum/boards/seven_nrf9151_ns.overlay
 ```

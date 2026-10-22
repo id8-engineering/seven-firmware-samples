@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export NRFUTIL_HOME=/tmp/nrfutil-home
+wrapper_dir=$(cd "$(dirname "$0")" && pwd)
+
+IFS=: read -r -a path_entries <<< "$PATH"
+clean_path=
+for path_entry in "${path_entries[@]}"; do
+  if [ "$path_entry" != "$wrapper_dir" ]; then
+    clean_path="${clean_path:+$clean_path:}$path_entry"
+  fi
+done
+export PATH=$clean_path
+
+nrfutil=$(command -v nrfutil)
+
+if [ "${!#}" = --shell ]; then
+  printf 'exit\n' | "$nrfutil" "$@"
+  exit
+fi
+
+exec "$nrfutil" "$@"
