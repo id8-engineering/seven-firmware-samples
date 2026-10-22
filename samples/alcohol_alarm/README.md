@@ -1,64 +1,58 @@
-# Alcohol alarm
+# Alcohol Alarm
 
-Reads the analog output from an MQ-3 alcohol sensor, converts the ADC value to
-a rough PPM estimate, and shows the result on an OLED display.
+This sample reads the analog output from an MQ-3 alcohol sensor, converts the
+ADC value to a rough PPM estimate, and shows the result on an OLED display.
 
-When the estimated PPM rises above the configured threshold, the sample also
-drives the on-board RGB LED and buzzer as visual and audible alarm outputs.
+Below the configured threshold, the onboard RGB LED is green and the buzzer is
+off. Above the threshold, the LED flashes red and the buzzer sounds at 2 kHz.
+The application samples the sensor once per second and logs the raw ADC value,
+millivolts, and estimated PPM.
 
-The sample reads the `AN` signal from the Alcohol Click through the ADC once
-per second, logs the raw ADC value together with the converted millivolts and
-estimated PPM, and shows the current value centered on the OLED as
-`PPM: <value>`. Below the threshold, the RGB LED is set to green and the
-buzzer is off. Above the threshold, the sample toggles the RGB LED red and
-toggles the buzzer at 2 kHz to indicate an alarm condition.
+> [!NOTE]
+> The PPM calculation is a simple linear approximation. MQ-3 sensors require
+> warm-up and calibration for the intended environment and measurement range.
 
-The current PPM calculation is a simple linear conversion from the measured
-millivolt value and should be treated as an approximation. MQ-3 sensors
-typically need warm-up and calibration for the intended environment and range.
+## Hardware
 
-## Hardware:
+- A Seven board
+- An [OLED B Click](https://www.mikroe.com/oled-b-click) installed in mikroBUS
+  socket 1
+- An [Alcohol Click](https://www.mikroe.com/alcohol-click) installed in
+  mikroBUS socket 2
 
-- [OLED B Click](https://www.mikroe.com/oled-b-click) on mikroBUS 1
-- [Alcohol Click](https://www.mikroe.com/alcohol-click) on mikroBUS 2
-- Seven board with the `seven/nrf9151/ns` target
+## Prerequisites
 
-### Build and flash sample
+Complete the toolchain, workspace, and hardware setup in the root
+[Getting started guide](../../README.md#requirements). Run the commands below
+from the `seven-firmware-samples` repository root.
 
-Build:
+## Build
 
 ```bash
-west build -p always  -b seven/nrf9151/ns samples/alcohol_alarm
+west build -p always -b seven/nrf9151/ns samples/alcohol_alarm
 ```
 
-Flash:
+## Flash
 
 ```bash
 west flash
 ```
 
-Debug:
+## View the output
+
+Open the UART port at 115200 baud. For example, on Ubuntu:
 
 ```bash
 minicom -D /dev/ttyACM0 -b 115200
 ```
 
-Example log:
+On macOS, use the corresponding `/dev/cu.usbmodem*` port as described in the
+[getting started guide](../../README.md#6-view-the-output).
 
->```bash
->SEGGER J-Link V9.48 - Real time terminal output
->SEGGER J-Link V13.0, SN=853001439
->Process: JLinkGDBServerCLExe
->*** Booting nRF Connect SDK v3.2.1-d8887f6f32df ***
->*** Using Zephyr OS v4.2.99-ec78104f1569 ***
+Expected application output:
+
+>```text
 >[00:00:00.396,636] <inf> main: ADC raw=3203 mv=2815 ppm=108
 >[00:00:01.447,967] <inf> main: ADC raw=3366 mv=2958 ppm=114
 >[00:00:02.499,298] <inf> main: ADC raw=3161 mv=2778 ppm=107
->[00:00:03.550,628] <inf> main: ADC raw=3377 mv=2968 ppm=114
->[00:00:04.601,989] <inf> main: ADC raw=3177 mv=2792 ppm=107
->[00:00:05.653,320] <inf> main: ADC raw=3431 mv=3015 ppm=116
->[00:00:06.704,589] <inf> main: ADC raw=3271 mv=2874 ppm=111
->[00:00:07.755,859] <inf> main: ADC raw=3450 mv=3032 ppm=117
->[00:00:08.807,189] <inf> main: ADC raw=3394 mv=2983 ppm=115
->[00:00:09.858,459] <inf> main: ADC raw=4095 mv=3599 ppm=138
 >```

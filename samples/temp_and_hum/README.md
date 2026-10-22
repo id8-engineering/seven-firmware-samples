@@ -1,54 +1,53 @@
 # Temperature & Humidity
 
-This sample reads temperature and relative humidity from an HTS221 sensor on the
+This sample reads temperature and relative humidity from an HTS221 sensor on a
 Temp&Hum Click board.
 
 ## Hardware
 
-- [Seven](https://github.com/id8-engineering/seven-hardware)
-- [Temp&Hum Click board connected to Seven mikroBUS socket 1](https://www.mikroe.com/temp-hum-click)
+- A [Seven board](https://github.com/id8-engineering/seven-hardware)
+- A [Temp&Hum Click board](https://www.mikroe.com/temp-hum-click) installed in
+  mikroBUS socket 1
 
 ## Prerequisites
 
-All commands should be run from repository root.
+Complete the toolchain, workspace, and hardware setup in the root
+[Getting started guide](../../README.md#requirements). Run the commands below
+from the `seven-firmware-samples` repository root.
 
-See [docs/PREREQUISITES.md](../../docs/PREREQUISITES.md), which is common prerequisites for all samples in this repository.
+## Build
 
-## Build & Run
-
-Build sample:
+Build Zephyr's HTS221 sample with the Seven-specific devicetree overlay:
 
 ```bash
 west build -p always -b seven/nrf9151/ns ../zephyr/samples/sensor/hts221 -- \
   -DEXTRA_DTC_OVERLAY_FILE=$(pwd)/samples/temp_and_hum/boards/seven_nrf9151_ns.overlay
 ```
 
-Flash sample:
+## Flash
 
 ```bash
 west flash
 ```
 
-Debug:
+## View the output
+
+Open the UART port at 115200 baud. For example, on Ubuntu:
 
 ```bash
 minicom -D /dev/ttyACM0 -b 115200
 ```
 
-Expected output:
+On macOS, use the corresponding `/dev/cu.usbmodem*` port as described in the
+[getting started guide](../../README.md#6-view-the-output).
+
+Expected application output:
 
 >```text
->SEGGER J-Link V9.48 - Real time terminal output
->SEGGER J-Link V13.0, SN=853001439
->Process: JLinkGDBServerCLExe
->*** Booting nRF Connect SDK v3.2.1-d8887f6f32df ***
->*** Using Zephyr OS v4.2.99-ec78104f1569 ***
 >Observation:1
 >Temperature:25.0 C
 >Relative Humidity:54.0%
 >Observation:2
 >Temperature:24.1 C
 >Relative Humidity:46.5%
->Observation:3
->Temperature:24.0 C
 >```
