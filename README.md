@@ -1,103 +1,177 @@
-# seven-firmware-samples
+# Getting started with Seven
 
-Seven is a rapid‑prototyping platform for low‑cost, low‑power connected
-IoT devices with integrated LTE cellular connectivity.
+[Seven](https://seven.id8-engineering.io) is an open-source platform for
+prototyping low-power cellular IoT devices with the Nordic Semiconductor
+nRF9151 and Zephyr RTOS.
 
-Designed for teams moving from concept to deployment, Seven bridges the gap
-between traditional development boards and finalized products—making it ideal
-for pilot projects, field trials, and early production runs.
+This guide takes you from a new development environment to a running Zephyr
+Hello World application. You will install the nRF Connect SDK, create a west
+workspace, build and flash the application, and verify its output over UART.
 
-Specification:
+## Requirements
 
-* Nordic Semiconductor nRF9151 SiP with integrated LTE-M/NB-IoT modem and GPS
-  * 64 MHz Arm Cortex-M33
-  * 256 KiB RAM
-  * 1 MiB flash
-* 6-36 V input voltage
-* 2 x mikroBUS™ sockets for easy expansion with Click Boards
-* RGB LED
-* Passive buzzer
-* Programming interface (SWD) via Raspberry Pi Debug Probe
-* Debug interface (UART) via Raspberry Pi Debug Probe
-* Industrial temperature range (-40 to 85 Celsius)
+### Hardware
 
-The software stack is built on the Zephyr Project, providing a robust, secure,
-and scalable RTOS foundation. It includes ready‑to‑use modules for over‑the‑air
-(OTA) updates and cloud connectivity, with primary support for AWS IoT.
+- A Seven board
+- A [Raspberry Pi Debug Probe](https://www.raspberrypi.com/products/debug-probe/)
+- A USB cable for the debug probe
+- A 6–36 V DC power supply for Seven
 
-By adopting the widely used mikroBUS™ add‑on standard, Seven offers access to
-thousands of off‑the‑shelf Click Boards. This makes it easy to extend the
-platform with sensors (motion, proximity, temperature, etc.) or interfaces such
-as RS‑232, RS‑485, CAN, and more—without custom hardware design.
+The debug probe provides the SWD programming connection and the UART console
+connection. The board design and other hardware resources are available in the
+[Seven hardware repository](https://github.com/id8-engineering/seven-hardware).
 
-Seven is open source and open hardware, giving developers complete transparency
-and control to customize, manufacture, and evolve their products without vendor
-lock‑in.
+### Development machine
 
----
+The tested development platforms are:
 
-This repository contains sample applications and tutorials for the Seven board.
+- Ubuntu 26.04
+- macOS 26.5
 
-## Prerequisites
+Install the following software before continuing:
 
-See [docs/PREREQUISITES.md](docs/PREREQUISITES.md), which is common
-prerequisites for all samples in this repository.
+- [nRF Util](https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html)
+- A serial terminal such as `minicom`
 
-## Upstream samples
+The nRF Util installation page lists any platform-specific prerequisites.
 
-There are 100s of samples and demos available from Zephyr and nRF Connect SDK.
+## 1. Connect the hardware
 
-* [Zephyr Project - Samples and Demos](https://docs.zephyrproject.org/latest/samples/index.html).
-* [nRF Connect SDK - Samples](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples.html)
+1. Connect the debug probe's SWD cable to the `DEBUG` connector on Seven.
+2. Connect the debug probe's UART cable to the `UART` connector on Seven.
+3. Connect the debug probe to your development machine over USB.
+4. Connect a 6–36 V DC power supply to Seven.
 
-### Upstream hello world sample
+## 2. Install the nRF Connect SDK
 
-Example to build [Zephyr Project - Hello World](https://docs.zephyrproject.org/latest/samples/hello_world/README.html):
+Install the SDK Manager command for nRF Util:
 
-Build the sample:
+```bash
+nrfutil install sdk-manager
+```
+
+If SDK Manager is already installed, update it:
+
+```bash
+nrfutil upgrade sdk-manager
+```
+
+Install the nRF Connect SDK version used by this repository:
+
+```bash
+nrfutil sdk-manager install v3.4.0
+```
+
+Start a shell with the matching toolchain:
+
+```bash
+nrfutil sdk-manager toolchain launch --ncs-version v3.4.0 --shell
+```
+
+Run all remaining commands in this guide from that shell.
+
+## 3. Create the workspace
+
+Create and enter a new workspace directory:
+
+```bash
+mkdir -p ~/src/seven-firmware-samples-workspace
+cd ~/src/seven-firmware-samples-workspace
+```
+
+Initialize the west workspace from this repository:
+
+```bash
+west init -m https://github.com/id8-engineering/seven-firmware-samples --mr main .
+```
+
+Enter the repository and fetch the nRF Connect SDK and Seven board support:
+
+```bash
+cd seven-firmware-samples
+west update
+```
+
+The repository directory is the workspace's application root. Run the build
+commands below from this directory.
+
+## 4. Build Hello World
+
+Build Zephyr's Hello World sample for Seven's non-secure nRF9151 target:
 
 ```bash
 west build -p always -b seven/nrf9151/ns ../zephyr/samples/hello_world
 ```
 
-> [!NOTE]
-> To build a nRF Connect SDK sample run:
->
-> ```bash
-> west build -p always -b seven/nrf9151/ns ../nrf/samples/<sample>
-> ```
+## 5. Flash the board
 
-Flash the sample to the board:
+Flash the application through the debug probe:
 
 ```bash
 west flash
 ```
 
-To view the console output use a terminal emulator, e.g `minicom`.
+## 6. View the output
 
-Example on Linux:
+Open the UART port at 115200 baud. The port name differs by operating system.
 
->```bash
->minicom -D /dev/ttyACM0 -b 115200
->*** Booting Zephyr OS build v4.5.0-rc1-492-ge35b686be50a ***
+On Ubuntu:
+
+```bash
+minicom -D /dev/ttyACM0 -b 115200
+```
+
+On macOS:
+
+```bash
+minicom -D /dev/cu.usbmodem1101 -b 115200
+```
+
+The exact port suffix can vary. When the application starts, the output
+includes:
+
+>```text
 >Hello World! seven/nrf9151/ns
 >```
 
-Example on MacOS:
+You have now built, flashed, and run your first application on Seven.
 
->```bash
->minicom -D /dev/cu.usbmodem1101 -b 115200
->*** Booting Zephyr OS build v4.5.0-rc1-492-ge35b686be50a ***
->Hello World! seven/nrf9151/ns
->```
+## Next: explore cellular connectivity
+
+Seven's defining feature is its integrated LTE-M/NB-IoT modem. A useful next
+step is the nRF Connect SDK
+[AT Client sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/cellular/at_client/README.html),
+which exposes the modem's AT command interface over UART.
+
+Build it from the repository root:
+
+```bash
+west build -p always -b seven/nrf9151/ns ../nrf/samples/cellular/at_client
+```
+
+Then flash it with `west flash` and follow the sample documentation to interact
+with the modem. More examples are available in the
+[nRF Connect SDK cellular samples](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/cellular.html).
 
 ## Seven samples
 
-These are samples tailored for the Seven board developed by the community.
+These samples demonstrate Seven's onboard peripherals and mikroBUS expansion
+sockets:
 
-* [Temperature & Humidity](samples/temp_and_hum/README.md)
-* [Alcohol Alarm](samples/alcohol_alarm)
+- [Temperature & Humidity](samples/temp_and_hum/README.md) reads an HTS221
+  sensor using a Temp&Hum Click board.
+- [Alcohol Alarm](samples/alcohol_alarm/README.md) combines an analog alcohol
+  sensor, OLED display, RGB LED, and buzzer.
 
-## License
+You can also use the wider collections of
+[Zephyr samples](https://docs.zephyrproject.org/latest/samples/index.html) and
+[nRF Connect SDK samples](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples.html)
+with Seven. Use `seven/nrf9151/ns` as the board target and check each sample's
+hardware and configuration requirements.
+
+## Contributing and license
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the pull
+request and commit requirements.
 
 This repository is licensed under the [Apache License 2.0](LICENSE).
