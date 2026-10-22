@@ -97,3 +97,7 @@ These are samples tailored for the Seven board developed by the community.
 
 * [Temperature & Humidity](samples/temp_and_hum/README.md)
 * [Alcohol Alarm](samples/alcohol_alarm)
+
+## License
+
+This repository is licensed under the [Apache License 2.0](LICENSE).
