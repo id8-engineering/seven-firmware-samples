@@ -46,25 +46,25 @@ The nRF Util installation page lists any platform-specific prerequisites.
 
 Install the SDK Manager command for nRF Util:
 
-```bash
+```bash {"name":"install-sdk-manager"}
 nrfutil install sdk-manager
 ```
 
 If SDK Manager is already installed, update it:
 
-```bash
+```bash {"name":"upgrade-sdk-manager"}
 nrfutil upgrade sdk-manager
 ```
 
 Install the nRF Connect SDK version used by this repository:
 
-```bash
+```bash {"name":"install-ncs"}
 nrfutil sdk-manager install v3.4.0
 ```
 
 Start a shell with the matching toolchain:
 
-```bash
+```bash {"excludeFromRunAll":true,"name":"launch-toolchain-shell"}
 nrfutil sdk-manager toolchain launch --ncs-version v3.4.0 --shell
 ```
 
@@ -74,20 +74,19 @@ Run all remaining commands in this guide from that shell.
 
 Create and enter a new workspace directory:
 
-```bash
-mkdir -p ~/src/seven-firmware-samples-workspace
-cd ~/src/seven-firmware-samples-workspace
+```bash {"name":"create-workspace","tag":"setup-workspace"}
+mkdir -p ~/src/seven-firmware-samples-workspace && cd ~/src/seven-firmware-samples-workspace
 ```
 
 Initialize the west workspace from this repository:
 
-```bash
+```bash {"name":"initialize-workspace","tag":"setup-workspace"}
 west init -m https://github.com/id8-engineering/seven-firmware-samples --mr main .
 ```
 
 Enter the repository and fetch the nRF Connect SDK and Seven board support:
 
-```bash
+```bash {"name":"update-workspace","tag":"setup-workspace"}
 cd seven-firmware-samples
 west update
 ```
@@ -99,7 +98,7 @@ commands below from this directory.
 
 Build Zephyr's Hello World sample for Seven's non-secure nRF9151 target:
 
-```bash
+```bash {"name":"build-hello-world"}
 west build -p always -b seven/nrf9151/ns ../zephyr/samples/hello_world
 ```
 
@@ -145,7 +144,7 @@ which exposes the modem's AT command interface over UART.
 
 Build it from the repository root:
 
-```bash
+```bash {"name":"build-at-client"}
 west build -p always -b seven/nrf9151/ns ../nrf/samples/cellular/at_client
 ```
 

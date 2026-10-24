@@ -1,0 +1,99 @@
+name: Getting Started
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build getting started examples
+    runs-on: ubuntu-latest
+    env:
+      NRFUTIL_HOME: /tmp/nrfutil-home
+    container:
+      image: ghcr.io/nrfconnect/sdk-nrf-toolchain:v3.4.0
+      env:
+        ACCEPT_JLINK_LICENSE: "0"
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Prepare checked-out revision
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git update-ref refs/heads/main "$GITHUB_SHA"
+
+      - name: Expose CI command wrappers
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          install -m 755 .github/scripts/nrfutil "$RUNNER_TEMP/bin/nrfutil"
+          install -m 755 .github/scripts/west "$RUNNER_TEMP/bin/west"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      # runme-action v3 still looks up releases in stateful/runme. Runme moved
+      # to runmedev/runme, and the old repository now returns no releases.
+      - name: Apply Runme action repository migration compatibility fix
+        env:
+          RUNME_ACTION_SHA: d88fd274f74c3fda03d0bf7089ce93d24c8adbaa
+        run: |
+          action="$RUNNER_WORKSPACE/../_actions/stateful/runme-action/$RUNME_ACTION_SHA/dist/index.js"
+          test "$(grep -c "const owner = 'stateful';" "$action")" -eq 1
+          sed -i "s/const owner = 'stateful';/const owner = 'runmedev';/" "$action"
+
+      - name: Install the nRF Connect SDK from getting started guide
+        uses: stateful/runme-action@d88fd274f74c3fda03d0bf7089ce93d24c8adbaa # v3.0.0
+        with:
+          token: ${{ github.token }}
+          version: v3.17.6
+          workflows: |
+            install-sdk-manager
+            upgrade-sdk-manager
+            install-ncs
+            launch-toolchain-shell
+
+      - name: Set up workspace from getting started guide
+        uses: stateful/runme-action@d88fd274f74c3fda03d0bf7089ce93d24c8adbaa # v3.0.0
+        env:
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: url.file://${{ github.workspace }}.insteadOf
+          GIT_CONFIG_VALUE_0: https://github.com/id8-engineering/seven-firmware-samples
+        with:
+          token: ${{ github.token }}
+          version: v3.17.6
+          workflows: |
+            create-workspace
+            initialize-workspace
+            update-workspace
+
+      - name: Verify checked-out revision
+        run: |
+          test "$(git -C "$HOME/src/seven-firmware-samples-workspace/seven-firmware-samples" rev-parse HEAD)" \
+            = "$GITHUB_SHA"
+          unlink "$GITHUB_WORKSPACE/seven-firmware-samples"
+
+      - name: Build getting started examples
+        uses: stateful/runme-action@d88fd274f74c3fda03d0bf7089ce93d24c8adbaa # v3.0.0
+        with:
+          token: ${{ github.token }}
+          version: v3.17.6
+          workflows: |
+            build-hello-world
+            build-at-client
+            build-alcohol-alarm
+            build-temp-and-hum

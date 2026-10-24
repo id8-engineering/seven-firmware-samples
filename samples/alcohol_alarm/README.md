@@ -28,7 +28,7 @@ from the `seven-firmware-samples` repository root.
 
 ## Build
 
-```bash
+```bash {"cwd":"../..","name":"build-alcohol-alarm"}
 west build -p always -b seven/nrf9151/ns samples/alcohol_alarm
 ```
 

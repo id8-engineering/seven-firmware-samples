@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export NRFUTIL_HOME=/tmp/nrfutil-home
+workspace="$HOME/src/seven-firmware-samples-workspace"
+repository="$workspace/seven-firmware-samples"
+wrapper_dir=$(cd "$(dirname "$0")" && pwd)
+
+IFS=: read -r -a path_entries <<< "$PATH"
+clean_path=
+for path_entry in "${path_entries[@]}"; do
+  if [ "$path_entry" != "$wrapper_dir" ]; then
+    clean_path="${clean_path:+$clean_path:}$path_entry"
+  fi
+done
+export PATH=$clean_path
+nrfutil=$(command -v nrfutil)
+
+if [ "${1:-}" = init ]; then
+  cd "$workspace"
+  "$nrfutil" sdk-manager toolchain launch --ncs-version v3.4.0 -- west "$@"
+  ln -s "$repository" "$GITHUB_WORKSPACE/seven-firmware-samples"
+  exit
+fi
+
+cd "$repository"
+exec "$nrfutil" sdk-manager toolchain launch --ncs-version v3.4.0 -- west "$@"
