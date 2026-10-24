@@ -75,8 +75,7 @@ Run all remaining commands in this guide from that shell.
 Create and enter a new workspace directory:
 
 ```bash
-mkdir -p ~/src/seven-firmware-samples-workspace
-cd ~/src/seven-firmware-samples-workspace
+mkdir -p ~/src/seven-firmware-samples-workspace && cd ~/src/seven-firmware-samples-workspace
 ```
 
 Initialize the west workspace from this repository:
