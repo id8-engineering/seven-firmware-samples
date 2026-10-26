@@ -2,7 +2,7 @@
 
 [Seven](https://seven.id8-engineering.io) is an open-source platform for
 prototyping low-power cellular IoT devices with the Nordic Semiconductor
-nRF9151 and Zephyr RTOS.
+nRF9151 and Zephyr Project.
 
 This guide takes you from a new development environment to a running Zephyr
 Hello World application. You will install the nRF Connect SDK, create a west
